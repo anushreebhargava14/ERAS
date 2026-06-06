@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERAS – Scenarios</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="nav-logo"><div class="logo-mark">🚨</div>ERAS</a>
+    <div class="nav-links">
+        <a href="home.html"><i data-lucide="home" style="width:14px;height:14px;"></i> Home</a>
+        <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
+        <a href="scenarios.html" class="active"><i data-lucide="map" style="width:14px;height:14px;"></i> Scenarios</a>
+        <a href="history.html"><i data-lucide="clock" style="width:14px;height:14px;"></i> History</a>
+        <a href="analytics.html"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Analytics</a>
+        <a href="how.html"><i data-lucide="book-open" style="width:14px;height:14px;"></i> Docs</a>
+    </div>
+    <div class="nav-right">
+        <div class="nav-status"><div class="pulse"></div> System Online</div>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>🗺️ Disaster Scenarios</h1>
+        <div class="breadcrumb">ERAS / Scenarios / Preset Configurations</div>
+    </div>
+</div>
+
+<div class="section" style="padding:40px 60px;">
+
+    <div class="alert alert-warn" style="margin-bottom:32px;max-width:700px;">
+        <i data-lucide="alert-triangle" style="width:16px;height:16px;flex-shrink:0;"></i>
+        <div>
+            <strong>Loading a scenario will clear your current region data.</strong>
+            You will be redirected to the Dashboard with the scenario pre-loaded.
+        </div>
+    </div>
+
+    <div class="section-header">
+        <span class="section-eyebrow">Choose a Scenario</span>
+        <h2>Real-Scale Disaster Configurations</h2>
+        <p>Each scenario is pre-configured with regions, populations, severity levels, and resource requirements based on realistic disaster response parameters.</p>
+    </div>
+
+    <div class="scenario-grid">
+
+        <!-- Earthquake -->
+        <div class="scenario-card" onclick="loadScenario('earthquake')">
+            <div class="scenario-bg scenario-bg-earthquake">
+                <span>🏚️</span>
+            </div>
+            <div class="scenario-body">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <span class="scenario-level" style="color:var(--red);">⚠️ CRITICAL SEVERITY</span>
+                    <span class="badge badge-red">3 Zones</span>
+                </div>
+                <h3>Earthquake Response</h3>
+                <p>Major urban earthquake with structural collapse, trapped survivors, and complete infrastructure failure across three densely-populated zones.</p>
+                <div class="scenario-stats">
+                    <div class="sc-stat">
+                        <span class="v">16,000</span>
+                        <span class="l">Affected Pop.</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">9 / 10</span>
+                        <span class="l">Max Severity</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">90 units</span>
+                        <span class="l">Total Resources</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">60 units</span>
+                        <span class="l">Suggested Budget</span>
+                    </div>
+                </div>
+            </div>
+            <button class="scenario-btn">Load Scenario →</button>
+        </div>
+
+        <!-- Flood -->
+        <div class="scenario-card" onclick="loadScenario('flood')">
+            <div class="scenario-bg scenario-bg-flood">
+                <span>🌊</span>
+            </div>
+            <div class="scenario-body">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <span class="scenario-level" style="color:var(--teal);">🌊 HIGH SEVERITY</span>
+                    <span class="badge badge-teal">3 Villages</span>
+                </div>
+                <h3>Flood Relief</h3>
+                <p>Widespread river flooding across rural villages — rising water levels, civilian displacement, and collapsing supply chains requiring immediate multi-zone response.</p>
+                <div class="scenario-stats">
+                    <div class="sc-stat">
+                        <span class="v">9,500</span>
+                        <span class="l">Affected Pop.</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">8 / 10</span>
+                        <span class="l">Max Severity</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">60 units</span>
+                        <span class="l">Total Resources</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">40 units</span>
+                        <span class="l">Suggested Budget</span>
+                    </div>
+                </div>
+            </div>
+            <button class="scenario-btn">Load Scenario →</button>
+        </div>
+
+        <!-- Wildfire -->
+        <div class="scenario-card" onclick="loadScenario('wildfire')">
+            <div class="scenario-bg scenario-bg-wildfire">
+                <span>🔥</span>
+            </div>
+            <div class="scenario-body">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <span class="scenario-level" style="color:var(--orange);">🔥 HIGH SEVERITY</span>
+                    <span class="badge badge-orange">3 Sectors</span>
+                </div>
+                <h3>Wildfire Emergency</h3>
+                <p>Fast-moving fire across semi-urban districts and forested corridors. Active structural threat, forced evacuations, and hazardous air quality across multiple sectors.</p>
+                <div class="scenario-stats">
+                    <div class="sc-stat">
+                        <span class="v">13,000</span>
+                        <span class="l">Affected Pop.</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">8 / 10</span>
+                        <span class="l">Max Severity</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">75 units</span>
+                        <span class="l">Total Resources</span>
+                    </div>
+                    <div class="sc-stat">
+                        <span class="v">50 units</span>
+                        <span class="l">Suggested Budget</span>
+                    </div>
+                </div>
+            </div>
+            <button class="scenario-btn">Load Scenario →</button>
+        </div>
+
+    </div>
+
+    <!-- Custom region note -->
+    <div style="margin-top:40px;text-align:center;">
+        <p style="color:var(--text-3);font-size:14px;margin-bottom:16px;">Or build your own scenario from scratch:</p>
+        <a href="dashboard.html" class="btn btn-secondary">
+            <i data-lucide="plus" style="width:14px;height:14px;"></i> Go to Dashboard and Add Regions
+        </a>
+    </div>
+
+</div>
+
+<div id="toast-container"></div>
+<script src="app.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

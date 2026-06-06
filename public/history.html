@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERAS – Allocation History</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="nav-logo"><div class="logo-mark">🚨</div>ERAS</a>
+    <div class="nav-links">
+        <a href="home.html"><i data-lucide="home" style="width:14px;height:14px;"></i> Home</a>
+        <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
+        <a href="scenarios.html"><i data-lucide="map" style="width:14px;height:14px;"></i> Scenarios</a>
+        <a href="history.html" class="active"><i data-lucide="clock" style="width:14px;height:14px;"></i> History</a>
+        <a href="analytics.html"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Analytics</a>
+        <a href="how.html"><i data-lucide="book-open" style="width:14px;height:14px;"></i> Docs</a>
+    </div>
+    <div class="nav-right">
+        <div class="nav-status"><div class="pulse"></div> System Online</div>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>🕐 Allocation History</h1>
+        <div class="breadcrumb">ERAS / History / All Runs</div>
+    </div>
+    <div class="page-header-right">
+        <a href="/api/history/export" class="btn btn-secondary btn-sm">
+            <i data-lucide="download" style="width:13px;height:13px;"></i> Export CSV
+        </a>
+        <button class="btn btn-danger btn-sm" onclick="clearHistory()">
+            <i data-lucide="trash-2" style="width:13px;height:13px;"></i> Clear History
+        </button>
+    </div>
+</div>
+
+<div style="padding:28px 40px;display:flex;flex-direction:column;gap:24px;">
+
+    <!-- KPI row -->
+    <div class="kpi-grid" id="historyKpis">
+        <div class="kpi-card">
+            <span class="kpi-icon">📊</span>
+            <span class="kpi-val" id="h-total">—</span>
+            <span class="kpi-label">Total Runs</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-icon">🔬</span>
+            <span class="kpi-val" id="h-knapsack-wins">—</span>
+            <span class="kpi-label">Knapsack Wins</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-icon">⚡</span>
+            <span class="kpi-val" id="h-greedy-wins">—</span>
+            <span class="kpi-label">Greedy Wins</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-icon">📈</span>
+            <span class="kpi-val" id="h-avg-improvement">—</span>
+            <span class="kpi-label">Avg. Improvement</span>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i data-lucide="list" style="width:16px;height:16px;color:var(--red);"></i> Run Log</h3>
+            <span class="badge badge-gray" id="runCount">0 entries</span>
+        </div>
+        <div id="historyBody">
+            <div class="empty-state">
+                <span class="empty-icon">🕐</span>
+                <h3>No allocations yet</h3>
+                <p>Run an allocation from the <a href="dashboard.html" style="color:var(--red);">Dashboard</a> to see your history here.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="toast-container"></div>
+<script src="app.js"></script>
+<script>
+    lucide.createIcons();
+    loadHistory();
+    loadHistoryKpis();
+</script>
+</body>
+</html>

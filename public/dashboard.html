@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERAS – Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="nav-logo"><div class="logo-mark">🚨</div>ERAS</a>
+    <div class="nav-links">
+        <a href="home.html"><i data-lucide="home" style="width:14px;height:14px;"></i> Home</a>
+        <a href="dashboard.html" class="active"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
+        <a href="scenarios.html"><i data-lucide="map" style="width:14px;height:14px;"></i> Scenarios</a>
+        <a href="history.html"><i data-lucide="clock" style="width:14px;height:14px;"></i> History</a>
+        <a href="analytics.html"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Analytics</a>
+        <a href="how.html"><i data-lucide="book-open" style="width:14px;height:14px;"></i> Docs</a>
+    </div>
+    <div class="nav-right">
+        <div class="nav-status"><div class="pulse"></div> System Online</div>
+        <div id="clock" style="font-family:var(--font-mono);font-size:13px;color:var(--text-3);">00:00:00</div>
+    </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>⚡ Allocation Dashboard</h1>
+        <div class="breadcrumb">ERAS / Dashboard / Resource Optimizer</div>
+    </div>
+    <div class="page-header-right">
+        <button class="btn btn-secondary btn-sm" onclick="resetAll()">
+            <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i> Reset All
+        </button>
+        <a href="scenarios.html" class="btn btn-secondary btn-sm">
+            <i data-lucide="map" style="width:13px;height:13px;"></i> Scenarios
+        </a>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard-wrap">
+
+    <!-- ── SIDEBAR ───────────────────────────────────────────── -->
+    <aside class="db-sidebar">
+
+        <!-- Resource capacity -->
+        <div>
+            <div class="panel-label">Total Resource Budget</div>
+            <div class="form-group">
+                <input type="number" id="totalResource" class="lg" placeholder="e.g. 60" min="1">
+            </div>
+            <div id="budgetMeter" style="display:none;">
+                <div class="progress-wrap">
+                    <div class="progress-label">
+                        <span>Resources used</span>
+                        <span id="budgetUsedLabel">0 / 0</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="budgetBar" style="width:0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Add region form -->
+        <div>
+            <div class="panel-label">
+                Add Region
+                <span id="regionCount" class="badge badge-gray">0 regions</span>
+            </div>
+
+            <div id="addAlert" class="alert alert-error" style="display:none;margin-bottom:12px;">
+                <span id="addAlertMsg"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Zone / Region Name</label>
+                <input type="text" id="name" placeholder="e.g. Zone Alpha">
+            </div>
+            <div class="form-group">
+                <label>Affected Population</label>
+                <input type="number" id="population" placeholder="e.g. 5000" min="1">
+            </div>
+            <div class="form-group">
+                <label>Severity Level (1–10)</label>
+                <input type="number" id="severity" placeholder="e.g. 8" min="1" max="10">
+            </div>
+            <div class="form-group">
+                <label>Resources Required</label>
+                <input type="number" id="resource" placeholder="e.g. 25" min="1">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+                <button class="btn btn-primary btn-full" onclick="addRegion()">
+                    <i data-lucide="plus" style="width:14px;height:14px;"></i> Add Region
+                </button>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Region list -->
+        <div style="flex:1;">
+            <div class="panel-label">Active Regions</div>
+            <div id="regionList" style="display:flex;flex-direction:column;gap:8px;">
+                <div class="empty-state" style="padding:30px 10px;">
+                    <span class="empty-icon" style="font-size:32px;">📍</span>
+                    <p style="font-size:13px;">No regions yet.<br>Add one above or <a href="scenarios.html" style="color:var(--red);">load a scenario</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Run button -->
+        <button class="btn btn-primary btn-full btn-lg" onclick="runAllocation()" id="runBtn">
+            ⚡ Run Allocation
+        </button>
+
+    </aside>
+
+    <!-- ── MAIN PANEL ─────────────────────────────────────────── -->
+    <main class="db-main">
+
+        <!-- KPI row -->
+        <div class="kpi-grid" id="kpiGrid">
+            <div class="kpi-card">
+                <span class="kpi-icon">📍</span>
+                <span class="kpi-val" id="k-regions">—</span>
+                <span class="kpi-label">Regions loaded</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-icon">🎯</span>
+                <span class="kpi-val" id="k-greedy">—</span>
+                <span class="kpi-label">Greedy impact</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-icon">🔬</span>
+                <span class="kpi-val" id="k-knapsack">—</span>
+                <span class="kpi-label">Knapsack impact</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-icon">📈</span>
+                <span class="kpi-val" id="k-improvement">—</span>
+                <span class="kpi-label">Improvement</span>
+            </div>
+        </div>
+
+        <!-- Algorithm results -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i data-lucide="cpu" style="width:16px;height:16px;color:var(--red);"></i> Algorithm Results</h3>
+                <span id="resultBadge" class="badge badge-gray">Waiting for run</span>
+            </div>
+            <div class="card-body">
+                <div class="algo-grid">
+
+                    <div class="algo-box" id="greedyBox">
+                        <div class="algo-label"><div class="dot amber"></div> Greedy Algorithm</div>
+                        <div class="algo-impact" id="greedyImpact">—</div>
+                        <div style="font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Selected Zones</div>
+                        <div class="regions-chips" id="greedyChips">
+                            <span style="font-size:12px;color:var(--text-4);">Run allocation to see</span>
+                        </div>
+                        <div id="greedyRes" style="margin-top:12px;display:none;">
+                            <div class="progress-wrap">
+                                <div class="progress-label">
+                                    <span style="font-size:11px;">Resource utilization</span>
+                                    <span style="font-size:11px;" id="greedyResLabel"></span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" id="greedyResBar" style="width:0%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="algo-box" id="knapsackBox">
+                        <div class="algo-label"><div class="dot green"></div> 0/1 Knapsack (DP)</div>
+                        <div class="algo-impact" id="knapsackImpact">—</div>
+                        <div style="font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Selected Zones</div>
+                        <div class="regions-chips" id="knapsackChips">
+                            <span style="font-size:12px;color:var(--text-4);">Run allocation to see</span>
+                        </div>
+                        <div id="knapsackRes" style="margin-top:12px;display:none;">
+                            <div class="progress-wrap">
+                                <div class="progress-label">
+                                    <span style="font-size:11px;">Resource utilization</span>
+                                    <span style="font-size:11px;" id="knapsackResLabel"></span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill green" id="knapsackResBar" style="width:0%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Verdict -->
+                <div id="verdict" style="display:none;margin-top:14px;" class="alert alert-info">
+                    <span id="verdictText"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i data-lucide="bar-chart-2" style="width:16px;height:16px;color:var(--red);"></i> Impact Comparison</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container" style="height:300px;">
+                    <canvas id="impactChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region impact table -->
+        <div class="card" id="regionTableCard" style="display:none;">
+            <div class="card-header">
+                <h3><i data-lucide="table" style="width:16px;height:16px;color:var(--red);"></i> Region Details</h3>
+            </div>
+            <div class="table-wrap" style="border:none;border-radius:0;">
+                <table id="regionTable">
+                    <thead>
+                        <tr>
+                            <th>Zone</th>
+                            <th>Population</th>
+                            <th>Severity</th>
+                            <th>Resources</th>
+                            <th>Impact Score</th>
+                            <th>Efficiency</th>
+                            <th>Greedy</th>
+                            <th>Knapsack</th>
+                        </tr>
+                    </thead>
+                    <tbody id="regionTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Algo explainer -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i data-lucide="book-open" style="width:16px;height:16px;color:var(--red);"></i> Algorithm Reference</h3>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--border);">
+                <div style="padding:20px;border-right:1px solid var(--border);">
+                    <h4 style="font-family:var(--font-display);font-weight:700;color:var(--orange);margin-bottom:8px;">⚡ Greedy Algorithm</h4>
+                    <p style="font-size:13px;color:var(--text-3);line-height:1.7;">Ranks regions by <strong>impact ÷ resource</strong> ratio. Allocates greedily from highest-efficiency region down. O(n log n) — fast and usually near-optimal.</p>
+                </div>
+                <div style="padding:20px;">
+                    <h4 style="font-family:var(--font-display);font-weight:700;color:var(--green);margin-bottom:8px;">🔬 0/1 Knapsack DP</h4>
+                    <p style="font-size:13px;color:var(--text-3);line-height:1.7;">Builds a <code style="background:var(--surface-alt);padding:1px 5px;border-radius:3px;">dp[n][capacity]</code> table evaluating every subset. Guarantees optimal allocation. O(n × W) time.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="editModal" class="modal-backdrop" style="display:none;" onclick="closeModal(event)">
+    <div class="modal">
+        <h3>✏️ Edit Region</h3>
+        <input type="hidden" id="editId">
+        <div class="form-group">
+            <label>Zone / Region Name</label>
+            <input type="text" id="editName">
+        </div>
+        <div class="form-group">
+            <label>Affected Population</label>
+            <input type="number" id="editPopulation" min="1">
+        </div>
+        <div class="form-group">
+            <label>Severity Level (1–10)</label>
+            <input type="number" id="editSeverity" min="1" max="10">
+        </div>
+        <div class="form-group">
+            <label>Resources Required</label>
+            <input type="number" id="editResource" min="1">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+<script>
+    // Clock
+    function tick() {
+        document.getElementById('clock').textContent = new Date().toTimeString().slice(0,8);
+    }
+    tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>

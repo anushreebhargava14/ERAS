@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERAS – How It Works</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="nav-logo"><div class="logo-mark">🚨</div>ERAS</a>
+    <div class="nav-links">
+        <a href="home.html"><i data-lucide="home" style="width:14px;height:14px;"></i> Home</a>
+        <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
+        <a href="scenarios.html"><i data-lucide="map" style="width:14px;height:14px;"></i> Scenarios</a>
+        <a href="history.html"><i data-lucide="clock" style="width:14px;height:14px;"></i> History</a>
+        <a href="analytics.html"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Analytics</a>
+        <a href="how.html" class="active"><i data-lucide="book-open" style="width:14px;height:14px;"></i> Docs</a>
+    </div>
+    <div class="nav-right">
+        <div class="nav-status"><div class="pulse"></div> System Online</div>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>📖 Documentation</h1>
+        <div class="breadcrumb">ERAS / Docs / How It Works</div>
+    </div>
+</div>
+
+<div class="how-container">
+
+    <h1 class="how-section-title" style="margin-bottom:4px;">How ERAS Works</h1>
+    <p style="color:var(--text-3);font-size:15px;margin-bottom:36px;">A complete guide to the optimization model, algorithms, and API.</p>
+
+    <!-- Problem -->
+    <div class="how-block">
+        <h2>🧠 The Problem</h2>
+        <p>In disaster relief operations, resources — rescue teams, medical units, supply convoys — are strictly finite. Multiple crisis zones compete for the same pool simultaneously. A coordinator must decide <strong>which zones receive resources</strong> to maximize total humanitarian impact within the available budget.</p>
+        <p style="margin-top:10px;">ERAS models this as a classic <strong>0/1 Knapsack problem</strong>: each region is either fully funded or receives nothing. No partial allocations. The goal is to select the subset of regions that maximizes aggregate impact without exceeding resource capacity.</p>
+    </div>
+
+    <!-- Impact formula -->
+    <div class="how-block">
+        <h2>📐 Impact Formula</h2>
+        <p>Each region is assigned a numerical impact score representing the humanitarian value of servicing it:</p>
+        <div class="formula">Impact = (Population × Severity) ÷ 1000</div>
+        <p>A region with 5,000 affected people at severity level 8 yields an impact score of <strong>40.0</strong>. A region with 2,000 people at severity 5 yields <strong>10.0</strong>. Higher population and severity both increase the urgency and reward of allocation.</p>
+        <p style="margin-top:10px;">The "resource required" value represents the weight of including a region — analogous to the item weight in a classic knapsack problem.</p>
+    </div>
+
+    <!-- Greedy -->
+    <div class="how-block" style="border-left-color:var(--orange);">
+        <h2>⚡ Greedy Algorithm</h2>
+        <p>The Greedy approach sorts all regions by their <strong>efficiency ratio</strong> and allocates resources greedily from highest-efficiency to lowest:</p>
+        <div class="formula">Efficiency = Impact ÷ Resources Required</div>
+        <p style="margin-top:10px;"><strong>How it works:</strong> Sort all regions by efficiency (descending). Iterate through the sorted list — if the current region fits within the remaining budget, allocate it; otherwise skip. Continue until the budget is exhausted.</p>
+        <p style="margin-top:10px;"><strong>Complexity:</strong> O(n log n) — dominated by the sort step.</p>
+        <p style="margin-top:10px;"><strong>Limitation:</strong> The greedy approach is a heuristic. It can fail to find the global optimum when selecting one high-efficiency small region blocks a larger combined gain from two moderate-efficiency regions.</p>
+    </div>
+
+    <!-- Knapsack -->
+    <div class="how-block" style="border-left-color:var(--green);">
+        <h2>🔬 0/1 Knapsack — Dynamic Programming</h2>
+        <p>The Knapsack DP builds a two-dimensional table <code style="background:var(--surface-alt);padding:2px 6px;border-radius:3px;">dp[i][w]</code> representing the maximum achievable impact using the first <em>i</em> regions with resource budget <em>w</em>.</p>
+        <div class="formula">dp[i][w] = max( dp[i−1][w],  dp[i−1][w − res[i]] + impact[i] )</div>
+        <p style="margin-top:10px;">For each region <em>i</em> at each capacity level <em>w</em>, we either <strong>exclude</strong> it (take the previous row's value) or <strong>include</strong> it (if it fits, add its impact to the best solution without it). The final answer is <code style="background:var(--surface-alt);padding:2px 6px;border-radius:3px;">dp[n][capacity]</code>.</p>
+        <p style="margin-top:10px;">Backtracking through the table reveals exactly which regions were selected in the optimal solution.</p>
+        <p style="margin-top:10px;"><strong>Complexity:</strong> O(n × W) time and space, where W is the total resource capacity. Provably optimal — no combination is left unchecked.</p>
+    </div>
+
+    <!-- Why compare -->
+    <div class="how-block">
+        <h2>⚖️ Why Compare Both?</h2>
+        <p>In real emergency operations, coordinators sometimes rely on fast heuristics due to time pressure. ERAS quantifies the <strong>cost of approximation</strong> — showing exactly how much impact is lost (or gained) by choosing speed over optimality.</p>
+        <p style="margin-top:10px;">In many scenarios the algorithms agree perfectly — Greedy happens to find the global optimum. When they diverge, the difference can represent hundreds or thousands of additional people receiving critical aid.</p>
+        <p style="margin-top:10px;">ERAS's Analytics page tracks win rates over time, giving coordinators insight into how often the faster greedy approach is sufficient for their particular deployment context.</p>
+    </div>
+
+    <!-- API reference -->
+    <div class="how-block" style="border-left-color:var(--teal);">
+        <h2>🔌 REST API Reference</h2>
+        <p style="margin-bottom:16px;">The ERAS backend exposes a clean JSON REST API at <code style="background:var(--surface-alt);padding:2px 6px;border-radius:3px;">http://localhost:3000</code>.</p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;">
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-teal">GET</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/regions</code>
+                <span style="color:var(--text-3);">Fetch all active regions</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-green">POST</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/regions</code>
+                <span style="color:var(--text-3);">Add a new region</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-amber">PUT</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/regions/:id</code>
+                <span style="color:var(--text-3);">Update a region</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-red">DELETE</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/regions/:id</code>
+                <span style="color:var(--text-3);">Delete a region</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-red">DELETE</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/regions</code>
+                <span style="color:var(--text-3);">Clear all regions</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-green">POST</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/allocate</code>
+                <span style="color:var(--text-3);">Run Greedy + Knapsack allocation (saves to history)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-teal">GET</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/history</code>
+                <span style="color:var(--text-3);">Get all allocation history</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-teal">GET</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/stats</code>
+                <span style="color:var(--text-3);">Get aggregate statistics</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:12px;">
+                <span class="badge badge-teal">GET</span>
+                <code style="background:var(--surface-alt);padding:4px 10px;border-radius:4px;">/api/history/export</code>
+                <span style="color:var(--text-3);">Export history as CSV download</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px;">
+        <a href="dashboard.html" class="btn btn-primary btn-lg">⚡ Open Dashboard</a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="logo-mark">ERAS</div>
+            <p>Emergency Resource Allocation System — v2.0</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>ERAS v2.0</span>
+        <span>Node.js · Express · SQLite · Chart.js · Lucide Icons</span>
+    </div>
+</footer>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

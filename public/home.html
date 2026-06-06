@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERAS – Emergency Resource Allocation System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+    🆕 New in v2.0: Allocation History, Analytics Dashboard &amp; CSV Export —
+    <a href="dashboard.html">Launch Dashboard →</a>
+</div>
+
+<nav class="navbar">
+    <a href="home.html" class="nav-logo">
+        <div class="logo-mark">🚨</div>
+        ERAS
+    </a>
+    <div class="nav-links">
+        <a href="home.html" class="active"><i data-lucide="home" style="width:14px;height:14px;"></i> Home</a>
+        <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
+        <a href="scenarios.html"><i data-lucide="map" style="width:14px;height:14px;"></i> Scenarios</a>
+        <a href="history.html"><i data-lucide="clock" style="width:14px;height:14px;"></i> History</a>
+        <a href="analytics.html"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Analytics</a>
+        <a href="how.html"><i data-lucide="book-open" style="width:14px;height:14px;"></i> Docs</a>
+    </div>
+    <div class="nav-right">
+        <div class="nav-status"><div class="pulse"></div> System Online</div>
+        <a href="dashboard.html" class="nav-launch btn">Launch App →</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-eyebrow">🚨 Emergency Operations Platform</div>
+        <h1>Optimize every second.<br><span class="red">Save every life.</span></h1>
+        <p>A full-stack decision-support platform for disaster relief coordinators. Allocate limited resources across crisis zones using provably-optimal algorithms — and compare them in real time.</p>
+        <div class="hero-btns">
+            <a href="dashboard.html" class="btn-hero-primary">⚡ Launch Dashboard</a>
+            <a href="scenarios.html" class="btn-hero-secondary">📋 Load a Scenario</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="num">2</span>
+                <span class="lbl">Algorithms</span>
+            </div>
+            <div class="hero-stat">
+                <span class="num">6</span>
+                <span class="lbl">Pages</span>
+            </div>
+            <div class="hero-stat">
+                <span class="num">100%</span>
+                <span class="lbl">Optimal</span>
+            </div>
+            <div class="hero-stat">
+                <span class="num">SQLite</span>
+                <span class="lbl">Persistent DB</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="hero-card">
+            <div class="hero-card-title">Live Allocation Preview</div>
+            <div class="hero-region-row">
+                <div class="hrr-name">Zone Alpha</div>
+                <div class="hrr-meta">Pop 8,000 · Sev 9 · Res 40</div>
+            </div>
+            <div class="hero-region-row">
+                <div class="hrr-name">Zone Bravo</div>
+                <div class="hrr-meta">Pop 5,000 · Sev 7 · Res 30</div>
+            </div>
+            <div class="hero-region-row">
+                <div class="hrr-name">Zone Charlie</div>
+                <div class="hrr-meta">Pop 3,000 · Sev 6 · Res 20</div>
+            </div>
+            <div class="hero-result-row">
+                <span class="hrr-algo">⚡ Greedy</span>
+                <span class="hrr-score">Impact: 83.0</span>
+            </div>
+            <div class="hero-result-row">
+                <span class="hrr-algo">🔬 Knapsack</span>
+                <span class="hrr-score">Impact: 90.0 ✓</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES GRID -->
+<section class="section alt">
+    <div class="section-header" style="text-align:center;">
+        <span class="section-eyebrow">What ERAS Does</span>
+        <h2>Built for crisis — designed for clarity</h2>
+        <p>Every feature is purpose-built for emergency resource coordinators.</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🧮</div>
+            <h3>Constraint Optimization</h3>
+            <p>Models resource dispatch as a mathematical optimization problem — maximizing total humanitarian impact under a fixed resource budget.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Greedy Heuristic</h3>
+            <p>Sorts regions by impact-to-resource ratio and allocates top-down. Near-optimal in milliseconds — ideal when speed matters most.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔬</div>
+            <h3>Knapsack DP — Optimal</h3>
+            <p>Dynamic programming guarantees the mathematically optimal allocation. No combination is left unchecked.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Side-by-Side Comparison</h3>
+            <p>See impact delta, selected zones, resource utilization bars, and a live Chart.js visualization — updated after every run.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🕐</div>
+            <h3>Allocation History</h3>
+            <p>Every run is persisted to SQLite. Browse, filter, expand, and export your full allocation log as CSV.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📈</div>
+            <h3>Analytics Dashboard</h3>
+            <p>Win rates, average impact, improvement trends — visualized with Chart.js line, donut, and bar charts.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🗺️</div>
+            <h3>Preset Scenarios</h3>
+            <p>Load real-scale earthquake, flood, or wildfire scenarios instantly. Data pre-populates the dashboard in one click.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">✏️</div>
+            <h3>Edit Regions</h3>
+            <p>Add, edit, or delete any region at any time. A modal editor lets you update any parameter without losing other data.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💾</div>
+            <h3>Persistent SQLite Backend</h3>
+            <p>Express + SQLite backend with a proper REST API at <code>/api/*</code>. Data survives restarts. Regions and history always intact.</p>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+    <div class="section-header" style="text-align:center;">
+        <span class="section-eyebrow">Workflow</span>
+        <h2>How It Works</h2>
+        <p>Three steps from crisis to optimal allocation.</p>
+    </div>
+
+    <div class="steps-grid" style="max-width:800px;margin:0 auto;">
+        <div class="step-card">
+            <div class="step-num">1</div>
+            <h3>Configure Regions</h3>
+            <p>Enter each affected zone: name, population, severity (1–10), and resources required. Or load a preset scenario.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-num">2</div>
+            <h3>Set Budget</h3>
+            <p>Enter your total available resource units — the constraint the algorithms must stay within.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-num">3</div>
+            <h3>Run &amp; Compare</h3>
+            <p>Both algorithms run instantly. Compare their selections, impact scores, and resource efficiency side by side.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section alt" style="text-align:center;padding:60px;">
+    <div style="max-width:500px;margin:0 auto;">
+        <div style="font-size:48px;margin-bottom:16px;">🚨</div>
+        <h2 style="font-family:var(--font-display);font-size:30px;font-weight:800;margin-bottom:12px;">Ready to allocate?</h2>
+        <p style="color:var(--text-3);margin-bottom:28px;font-size:15px;">Open the dashboard, add your regions, and run the allocation engine in under 60 seconds.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <a href="dashboard.html" class="btn btn-primary btn-lg">⚡ Open Dashboard</a>
+            <a href="scenarios.html" class="btn btn-secondary btn-lg">📋 Try a Scenario</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="logo-mark">ERAS</div>
+            <p>Emergency Resource Allocation System — A full-stack optimization platform for disaster relief coordinators.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Pages</h4>
+            <a href="home.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="scenarios.html">Scenarios</a>
+            <a href="history.html">History</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="how.html">How It Works</a>
+        </div>
+        <div class="footer-links">
+            <h4>API Endpoints</h4>
+            <a href="#">GET /api/regions</a>
+            <a href="#">POST /api/allocate</a>
+            <a href="#">GET /api/history</a>
+            <a href="#">GET /api/stats</a>
+            <a href="#">GET /api/history/export</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>ERAS v2.0 — Emergency Resource Allocation System</span>
+        <span>Node.js · Express · SQLite · Chart.js</span>
+    </div>
+</footer>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

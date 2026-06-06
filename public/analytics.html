@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERAS – Analytics</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="home.html" class="nav-logo"><div class="logo-mark">🚨</div>ERAS</a>
+    <div class="nav-links">
+        <a href="home.html"><i data-lucide="home" style="width:14px;height:14px;"></i> Home</a>
+        <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
+        <a href="scenarios.html"><i data-lucide="map" style="width:14px;height:14px;"></i> Scenarios</a>
+        <a href="history.html"><i data-lucide="clock" style="width:14px;height:14px;"></i> History</a>
+        <a href="analytics.html" class="active"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Analytics</a>
+        <a href="how.html"><i data-lucide="book-open" style="width:14px;height:14px;"></i> Docs</a>
+    </div>
+    <div class="nav-right">
+        <div class="nav-status"><div class="pulse"></div> System Online</div>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>📈 Analytics</h1>
+        <div class="breadcrumb">ERAS / Analytics / Performance Overview</div>
+    </div>
+    <div class="page-header-right">
+        <button class="btn btn-secondary btn-sm" onclick="loadAnalytics()">
+            <i data-lucide="refresh-cw" style="width:13px;height:13px;"></i> Refresh
+        </button>
+    </div>
+</div>
+
+<div style="padding:28px 40px;display:flex;flex-direction:column;gap:24px;">
+
+    <!-- KPI row -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <span class="kpi-icon">🏃</span>
+            <span class="kpi-val" id="a-runs">—</span>
+            <span class="kpi-label">Total Allocations</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-icon">🎯</span>
+            <span class="kpi-val" id="a-avg-impact">—</span>
+            <span class="kpi-label">Avg. Knapsack Impact</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-icon">🏆</span>
+            <span class="kpi-val" id="a-win-rate">—</span>
+            <span class="kpi-label">Knapsack Win Rate</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-icon">📍</span>
+            <span class="kpi-val" id="a-regions">—</span>
+            <span class="kpi-label">Active Regions</span>
+        </div>
+    </div>
+
+    <!-- Charts row 1 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i data-lucide="pie-chart" style="width:16px;height:16px;color:var(--red);"></i> Algorithm Win Rates</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container" style="height:220px;">
+                    <canvas id="winRateChart"></canvas>
+                </div>
+                <div id="winRateLegend" style="display:flex;justify-content:center;gap:20px;margin-top:12px;font-size:12px;color:var(--text-3);"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i data-lucide="trending-up" style="width:16px;height:16px;color:var(--red);"></i> Impact Over Time (Last 15 Runs)</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container" style="height:220px;">
+                    <canvas id="impactHistoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Current regions chart -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i data-lucide="bar-chart" style="width:16px;height:16px;color:var(--red);"></i> Current Regions — Impact vs. Resources Required</h3>
+        </div>
+        <div class="card-body">
+            <div class="chart-container" style="height:260px;">
+                <canvas id="regionsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- No data notice -->
+    <div id="noDataNotice" class="alert alert-info" style="display:none;">
+        <i data-lucide="info" style="width:16px;height:16px;flex-shrink:0;"></i>
+        <div>Run at least one allocation from the <a href="dashboard.html" style="color:var(--teal);font-weight:600;">Dashboard</a> to populate the analytics charts.</div>
+    </div>
+
+</div>
+
+<div id="toast-container"></div>
+<script src="app.js"></script>
+<script>
+    lucide.createIcons();
+    loadAnalytics();
+</script>
+</body>
+</html>
